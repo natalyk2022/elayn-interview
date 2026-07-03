@@ -310,7 +310,7 @@ function sleep(ms) { return new Promise(function(r){ setTimeout(r, ms); }); }
 
 // ── STATE ──────────────────────────────────────────────────────────
 let appsScriptUrl = 'https://script.google.com/macros/s/AKfycbxHcX3eQgzdUO4CQmiCKaxO13UzVk_p27RJrAUI7JfAWC8PZAxsAss8VuYNJ4bqECpQ/exec';
-let candidateName = document.getElementById('candidate-name-input').value.trim();
+let candidateName = '';
 let answers = [];
 let currentQ = 0;
 let candQtext = '';
@@ -371,6 +371,11 @@ async function initInterview() {
     btn.disabled = false; btn.textContent = 'Готов к интервью';
     return;
   }
+
+  // Read candidate name from input field
+  candidateName = (document.getElementById('candidate-name-input') || {}).value || '';
+  candidateName = candidateName.trim();
+  console.log('Candidate name:', candidateName);
 
   // Create AudioContext (must be after user gesture)
   audioCtx = new (window.AudioContext || window.webkitAudioContext)();
