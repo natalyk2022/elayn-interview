@@ -684,14 +684,18 @@ async function buildReportSilent() {
     console.log('Sending results to Apps Script for analysis + save...');
     // Send all answers to Apps Script — it runs GPT + saves to Sheets
     // Using no-cors: no response needed, fire and forget
-    fetch(APPS_SCRIPT_URL, {
+    // Re-read name in case global variable wasn't set
+  var nameToSend = candidateName || (document.getElementById('candidate-name-input') ? document.getElementById('candidate-name-input').value.trim() : '') || '—';
+  console.log('Sending candidateName:', nameToSend);
+
+  fetch(APPS_SCRIPT_URL, {
       method: 'POST',
       mode: 'no-cors',
       headers: { 'Content-Type': 'text/plain' },
       body: JSON.stringify({
         action: 'analyze_and_save',
         vacancy: 'Проджект-менеджер',
-        candidateName: candidateName,
+        candidateName: nameToSend,
         answers: answers,
         candQuestions: candQtext,
         timestamp: new Date().toISOString()
